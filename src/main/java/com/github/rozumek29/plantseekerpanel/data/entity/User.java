@@ -18,8 +18,6 @@ public class User extends AbstractEntity {
     private String hashedPassword;
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<Role> roles;
-    @Lob
-    private String profilePictureUrl;
 
     public String getUsername() {
         return username;
@@ -44,12 +42,6 @@ public class User extends AbstractEntity {
     }
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
-    }
-    public String getProfilePictureUrl() {
-        return profilePictureUrl;
-    }
-    public void setProfilePictureUrl(String profilePictureUrl) {
-        this.profilePictureUrl = profilePictureUrl;
     }
 
 }

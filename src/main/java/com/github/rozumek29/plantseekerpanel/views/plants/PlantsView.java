@@ -1,12 +1,15 @@
 package com.github.rozumek29.plantseekerpanel.views.plants;
 
+import com.github.rozumek29.plantseekerpanel.data.entity.Plant;
+import com.github.rozumek29.plantseekerpanel.data.service.PlantService;
 import com.github.rozumek29.plantseekerpanel.views.MainLayout;
-import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.html.Image;
-import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.crud.CrudGrid;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.vaadin.crudui.crud.impl.GridCrud;
+
 import javax.annotation.security.RolesAllowed;
 
 @PageTitle("Plants")
@@ -14,20 +17,17 @@ import javax.annotation.security.RolesAllowed;
 @RolesAllowed("user")
 public class PlantsView extends VerticalLayout {
 
-    public PlantsView() {
+    public PlantsView(PlantService service) {
         setSpacing(false);
 
-        Image img = new Image("images/empty-plant.png", "placeholder plant");
-        img.setWidth("200px");
-        add(img);
+        var crud = new GridCrud<>(Plant.class, service);
+        crud.getGrid().setColumns("name", "latinName", "origin", "species", "family", "description", "img");
+        crud.getCrudFormFactory().setVisibleProperties("name", "latinName", "origin", "species", "family", "description", "img");
 
-        add(new H2("This place intentionally left empty"));
-        add(new Paragraph("It’s a place where you can grow your own UI 🤗"));
+        add(
+                crud
+        );
 
-        setSizeFull();
-        setJustifyContentMode(JustifyContentMode.CENTER);
-        setDefaultHorizontalComponentAlignment(Alignment.CENTER);
-        getStyle().set("text-align", "center");
     }
 
 }

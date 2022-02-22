@@ -1,12 +1,21 @@
 package com.github.rozumek29.plantseekerpanel.views.users;
 
+import com.github.rozumek29.plantseekerpanel.data.entity.User;
+import com.github.rozumek29.plantseekerpanel.data.service.UserService;
 import com.github.rozumek29.plantseekerpanel.views.MainLayout;
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouterLink;
+import org.vaadin.crudui.crud.impl.GridCrud;
+
 import javax.annotation.security.RolesAllowed;
 
 @PageTitle("Users")
@@ -14,20 +23,22 @@ import javax.annotation.security.RolesAllowed;
 @RolesAllowed("admin")
 public class UsersView extends VerticalLayout {
 
-    public UsersView() {
+    public UsersView(UserService service) {
         setSpacing(false);
 
-        Image img = new Image("images/empty-plant.png", "placeholder plant");
-        img.setWidth("200px");
-        add(img);
+        var grid = new GridCrud<>(User.class, service);
+        grid.getGrid().setColumns("id", "username", "roles");
+        grid.setAddOperationVisible(false);
+        grid.setUpdateOperationVisible(false);
+        Button addUser = new Button(new Icon(VaadinIcon.PLUS));
+        addUser.setIconAfterText(true);
+        addUser.addClickListener( e -> UI.getCurrent().navigate(NewUser.class));
+        grid.getCrudLayout().addToolbarComponent(addUser);
 
-        add(new H2("This place intentionally left empty"));
-        add(new Paragraph("It’s a place where you can grow your own UI 🤗"));
+        add(
+                grid
+        );
 
-        setSizeFull();
-        setJustifyContentMode(JustifyContentMode.CENTER);
-        setDefaultHorizontalComponentAlignment(Alignment.CENTER);
-        getStyle().set("text-align", "center");
     }
 
 }
