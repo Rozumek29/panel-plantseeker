@@ -11,9 +11,8 @@ import javax.persistence.Entity;
 @DiscriminatorValue("POTTED")
 public class PottedPlant extends Plant{
 
-    private String description;
     private String decorativeness;
     private String plantUsage;
-    private String Toxicity;
+    private String toxicity;
 
 }

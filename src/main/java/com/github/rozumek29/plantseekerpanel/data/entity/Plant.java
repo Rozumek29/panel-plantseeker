@@ -19,8 +19,9 @@ public class Plant {
     private String latinName;
     private String polishFamily;
     private String latinFamily;
+    private String description;
 
-    private String LightConditions;
+    private String lightConditions;
     private String subsoil;
     private String watering;
 

@@ -30,8 +30,7 @@ public class PlantsView extends VerticalLayout {
         setSpacing(false);
 
         var crud = new GridCrud<>(Plant.class, service);
-//        crud.getGrid().setColumns("name", "latinName", "origin", "species", "family", "description", "img");
-//        crud.getCrudFormFactory().setVisibleProperties("name", "latinName", "origin", "species", "family", "description", "img");
+
         crud.setHeightFull();
         crud.setAddOperationVisible(false);
         crud.setAddOperationVisible(false);
@@ -39,9 +38,11 @@ public class PlantsView extends VerticalLayout {
         MenuBar menu = new MenuBar();
         MenuItem item = menu.addItem("Add Plant");
         SubMenu subMenu = item.getSubMenu();
+
         subMenu.addItem("Garden Plant", clickEvent -> {
             UI.getCurrent().navigate(NewGardenPlant.class);
         });
+
         subMenu.addItem("Potted Plant", clickEvent -> {
             UI.getCurrent().navigate(NewPottedPlant.class);
         });
