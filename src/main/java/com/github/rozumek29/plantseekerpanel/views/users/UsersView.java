@@ -27,7 +27,7 @@ public class UsersView extends VerticalLayout {
         setSpacing(false);
 
         var grid = new GridCrud<>(User.class, service);
-        grid.getGrid().setColumns("id", "username", "roles");
+        grid.getGrid().setColumns("id", "username", "name", "roles");
         grid.setAddOperationVisible(false);
         grid.setUpdateOperationVisible(false);
         Button addUser = new Button(new Icon(VaadinIcon.PLUS));

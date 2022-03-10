@@ -1,9 +1,18 @@
 package com.github.rozumek29.plantseekerpanel.views.plants;
 
+import com.github.rozumek29.plantseekerpanel.data.entity.GardenPlant;
 import com.github.rozumek29.plantseekerpanel.data.entity.Plant;
+import com.github.rozumek29.plantseekerpanel.data.entity.PottedPlant;
 import com.github.rozumek29.plantseekerpanel.data.service.PlantService;
 import com.github.rozumek29.plantseekerpanel.views.MainLayout;
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.contextmenu.MenuItem;
+import com.vaadin.flow.component.contextmenu.SubMenu;
 import com.vaadin.flow.component.crud.CrudGrid;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.menubar.MenuBar;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -21,8 +30,23 @@ public class PlantsView extends VerticalLayout {
         setSpacing(false);
 
         var crud = new GridCrud<>(Plant.class, service);
-        crud.getGrid().setColumns("name", "latinName", "origin", "species", "family", "description", "img");
-        crud.getCrudFormFactory().setVisibleProperties("name", "latinName", "origin", "species", "family", "description", "img");
+//        crud.getGrid().setColumns("name", "latinName", "origin", "species", "family", "description", "img");
+//        crud.getCrudFormFactory().setVisibleProperties("name", "latinName", "origin", "species", "family", "description", "img");
+        crud.setHeightFull();
+        crud.setAddOperationVisible(false);
+        crud.setAddOperationVisible(false);
+
+        MenuBar menu = new MenuBar();
+        MenuItem item = menu.addItem("Add Plant");
+        SubMenu subMenu = item.getSubMenu();
+        subMenu.addItem("Garden Plant", clickEvent -> {
+            UI.getCurrent().navigate(NewGardenPlant.class);
+        });
+        subMenu.addItem("Potted Plant", clickEvent -> {
+            UI.getCurrent().navigate(NewPottedPlant.class);
+        });
+
+        crud.getCrudLayout().addToolbarComponent(menu);
 
         add(
                 crud

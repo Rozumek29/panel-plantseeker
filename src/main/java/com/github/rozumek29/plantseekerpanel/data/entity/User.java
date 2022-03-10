@@ -2,12 +2,11 @@ package com.github.rozumek29.plantseekerpanel.data.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.rozumek29.plantseekerpanel.data.AbstractEntity;
-import com.github.rozumek29.plantseekerpanel.data.Role;
+import com.github.rozumek29.plantseekerpanel.enums.Role;
 import java.util.Set;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.Lob;
 
 @Entity
 public class User extends AbstractEntity {

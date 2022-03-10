@@ -1,6 +1,6 @@
 package com.github.rozumek29.plantseekerpanel.views.users;
 
-import com.github.rozumek29.plantseekerpanel.data.Role;
+import com.github.rozumek29.plantseekerpanel.enums.Role;
 import com.github.rozumek29.plantseekerpanel.data.entity.User;
 import com.github.rozumek29.plantseekerpanel.data.service.UserService;
 import com.github.rozumek29.plantseekerpanel.views.MainLayout;

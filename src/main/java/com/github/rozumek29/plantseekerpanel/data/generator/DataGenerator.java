@@ -1,6 +1,6 @@
 package com.github.rozumek29.plantseekerpanel.data.generator;
 
-import com.github.rozumek29.plantseekerpanel.data.Role;
+import com.github.rozumek29.plantseekerpanel.enums.Role;
 import com.github.rozumek29.plantseekerpanel.data.entity.User;
 import com.github.rozumek29.plantseekerpanel.data.service.UserRepository;
 import com.vaadin.flow.spring.annotation.SpringComponent;

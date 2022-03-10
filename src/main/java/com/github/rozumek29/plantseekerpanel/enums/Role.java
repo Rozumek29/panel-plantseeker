@@ -1,4 +1,4 @@
-package com.github.rozumek29.plantseekerpanel.data;
+package com.github.rozumek29.plantseekerpanel.enums;
 
 public enum Role {
     USER("user"), ADMIN("admin");

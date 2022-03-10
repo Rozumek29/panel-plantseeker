@@ -8,18 +8,20 @@ import javax.persistence.*;
 @Entity
 @Table(name = "plants")
 @Getter @Setter
+@DiscriminatorColumn(name="product_type", discriminatorType = DiscriminatorType.STRING)
 public class Plant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String polishName;
     private String latinName;
-    private String origin;
-    private String species;
-    private String family;
-    private String description;
-    private String img;
+    private String polishFamily;
+    private String latinFamily;
+
+    private String LightConditions;
+    private String subsoil;
+    private String watering;
 
 }
