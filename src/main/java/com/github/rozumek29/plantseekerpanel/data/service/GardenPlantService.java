@@ -1,8 +1,8 @@
 package com.github.rozumek29.plantseekerpanel.data.service;
 
-import com.github.rozumek29.plantseekerpanel.data.entity.Plant;
+import com.github.rozumek29.plantseekerpanel.data.entity.GardenPlant;
+import com.github.rozumek29.plantseekerpanel.data.entity.PottedPlant;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.vaadin.crudui.crud.CrudListener;
 
@@ -10,27 +10,27 @@ import java.util.Collection;
 
 @Service
 @RequiredArgsConstructor
-public class PlantService implements CrudListener<Plant> {
+public class GardenPlantService implements CrudListener<GardenPlant> {
 
-    private final PlantRepository repository;
+    private final GardenPlantRepository repository;
 
     @Override
-    public Collection<Plant> findAll() {
+    public Collection<GardenPlant> findAll() {
         return repository.findAll();
     }
 
     @Override
-    public Plant add(Plant plant) {
+    public GardenPlant add(GardenPlant plant) {
         return repository.save(plant);
     }
 
     @Override
-    public Plant update(Plant plant) {
+    public GardenPlant update(GardenPlant plant) {
         return repository.save(plant);
     }
 
     @Override
-    public void delete(Plant plant) {
+    public void delete(GardenPlant plant) {
         repository.delete(plant);
     }
 

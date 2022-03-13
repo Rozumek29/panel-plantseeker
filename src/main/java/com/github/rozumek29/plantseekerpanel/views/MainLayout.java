@@ -1,9 +1,12 @@
 package com.github.rozumek29.plantseekerpanel.views;
 
+import com.github.rozumek29.plantseekerpanel.data.entity.PottedPlant;
 import com.github.rozumek29.plantseekerpanel.data.entity.User;
 import com.github.rozumek29.plantseekerpanel.security.AuthenticatedUser;
 import com.github.rozumek29.plantseekerpanel.views.dashboard.DashboardView;
-import com.github.rozumek29.plantseekerpanel.views.plants.PlantsView;
+import com.github.rozumek29.plantseekerpanel.views.plants.GardenPlantsView;
+//import com.github.rozumek29.plantseekerpanel.views.plants.PlantsView;
+import com.github.rozumek29.plantseekerpanel.views.plants.PottedPlantsView;
 import com.github.rozumek29.plantseekerpanel.views.users.UsersView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -136,7 +139,8 @@ public class MainLayout extends AppLayout {
         return new MenuItemInfo[]{ //
                 new MenuItemInfo("Dashboard", "la la-book-open", DashboardView.class), //
 
-                new MenuItemInfo("Plants", "la la-table", PlantsView.class), //
+                new MenuItemInfo("Potted Plants", "la la-table", PottedPlantsView.class), //
+                new MenuItemInfo("Garden Plants", "la la-table", GardenPlantsView.class), //
 
                 new MenuItemInfo("Users", "la la-users-cog", UsersView.class), //
 

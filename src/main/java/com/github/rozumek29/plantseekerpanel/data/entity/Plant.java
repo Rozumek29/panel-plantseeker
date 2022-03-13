@@ -4,11 +4,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "plants")
 @Getter @Setter
-@DiscriminatorColumn(name="product_type", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorColumn(name="plant_type", discriminatorType = DiscriminatorType.STRING)
 public class Plant {
 
     @Id
@@ -19,10 +21,11 @@ public class Plant {
     private String latinName;
     private String polishFamily;
     private String latinFamily;
+    private String decorativeness;
+    private String plantUsage;
     private String description;
+    @Column(insertable = false, updatable = false)
+    private String plant_type;
 
-    private String lightConditions;
-    private String subsoil;
-    private String watering;
-
+    // TODO IMG LIST
 }
