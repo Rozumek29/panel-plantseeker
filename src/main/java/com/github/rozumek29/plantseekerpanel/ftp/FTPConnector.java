@@ -18,15 +18,6 @@ import java.io.PrintWriter;
 @SpringComponent
 public class FTPConnector {
 
-    //    @Value("${ftp.host}")
-//    private String host;
-//    @Value("${ftp.username}")
-//    private String username;
-//    @Value("${ftp.password}")
-//    private String password;
-//    @Value("${ftp.path}")
-//    private String path;
-
     protected static String host = "serwer1727017.home.pl";
     protected static String username = "kacper.wyrozumialski1@zspwrzesnia.pl";
     protected static String password = "VK6xW8EYyrKj";
@@ -38,7 +29,7 @@ public class FTPConnector {
 
     public FTPConnector() throws IOException {
         client = new FTPClient();
-        client.connect(this.host);
+        client.connect(this.host, 21);
 
         int reply = client.getReplyCode();
         if (!FTPReply.isPositiveCompletion(reply)) {
@@ -47,10 +38,12 @@ public class FTPConnector {
         }
 
         client.login(this.username, this.password);
+        client.enterLocalPassiveMode();
 
         client.setFileTransferMode(FTP.BINARY_FILE_TYPE);
         client.setFileType(FTP.BINARY_FILE_TYPE);
-        client.addProtocolCommandListener(new PrintCommandListener(new PrintWriter(System.out)));
+        
+//        client.addProtocolCommandListener(new PrintCommandListener(new PrintWriter(System.out)));
 
         client.changeWorkingDirectory(this.path);
 
