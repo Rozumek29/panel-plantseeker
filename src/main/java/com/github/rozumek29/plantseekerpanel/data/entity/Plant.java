@@ -6,6 +6,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "plants")
@@ -27,5 +28,7 @@ public class Plant {
     @Column(insertable = false, updatable = false)
     private String plant_type;
 
-    // TODO IMG LIST
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "plant_id")
+    private List<PlantImage> images;
 }

@@ -3,14 +3,13 @@ package com.github.rozumek29.plantseekerpanel.views.plants;
 import com.github.rozumek29.plantseekerpanel.data.entity.GardenPlant;
 import com.github.rozumek29.plantseekerpanel.data.service.GardenPlantService;
 import com.github.rozumek29.plantseekerpanel.data.service.PottedPlantService;
+import com.github.rozumek29.plantseekerpanel.ftp.FTPUploader;
 import com.github.rozumek29.plantseekerpanel.views.MainLayout;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
-import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.html.H5;
+import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
@@ -18,6 +17,8 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.component.upload.Upload;
+import com.vaadin.flow.component.upload.receivers.MultiFileMemoryBuffer;
 import com.vaadin.flow.router.Route;
 
 import javax.annotation.security.RolesAllowed;
@@ -47,6 +48,12 @@ public class NewGardenPlant extends HorizontalLayout {
     private final DatePicker fruits_date = new DatePicker("Fruits Date");
     private final TextField origin = new TextField("Origin");
 
+    private final MultiFileMemoryBuffer buffer = new MultiFileMemoryBuffer();
+
+    private final H4 uploadTitle = new H4("Upload images");
+    private final Paragraph uploadHint = new Paragraph("Accepted file formats: JPEG, PNG");
+    private final Upload imgUpload = new Upload(buffer);
+
     public NewGardenPlant(GardenPlantService service) {
 
         /*
@@ -56,8 +63,12 @@ public class NewGardenPlant extends HorizontalLayout {
         setSpacing(false);
         Button backbtn = new Button(new Icon(VaadinIcon.ARROW_BACKWARD));
         backbtn.addClickListener(event -> {
-            //UI.getCurrent().navigate(PlantsView.class);
+            UI.getCurrent().navigate(GardenPlantsView.class);
         });
+
+        imgUpload.setAcceptedFileTypes("image/jpeg", "image/png");
+        imgUpload.setMaxFiles(5);
+
         add(
                 new HorizontalLayout(
                         new VerticalLayout(
@@ -82,7 +93,12 @@ public class NewGardenPlant extends HorizontalLayout {
                                         origin,
                                         decorativeness,
                                         plantUsage,
-                                        description
+                                        description,
+                                        new VerticalLayout(
+                                                uploadTitle,
+                                                uploadHint,
+                                                imgUpload
+                                        )
                                 ),
                                 new Button("Save", event -> {
                                     var plant = new GardenPlant();
@@ -107,13 +123,17 @@ public class NewGardenPlant extends HorizontalLayout {
                                     plant.setPlantUsage(plantUsage.getValue());
 
                                     plant.setDescription(description.getValue());
-                                    List<String> imgList = new ArrayList<>();
-                                    imgList.add("img_1.jpg");
-                                    imgList.add("img_2.jpg");
-                                    plant.setImgList(imgList);
+
+                                    if (imgUpload.isUploading()){
+                                        return;
+                                    }
 
 
                                     service.add(plant);
+                                    FTPUploader.uploadImage(buffer, plant);
+                                    service.update(plant);
+
+
                                     UI.getCurrent().navigate(GardenPlantsView.class);
                                     Notification.show("Plant saved.");
                                 })
