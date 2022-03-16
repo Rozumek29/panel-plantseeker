@@ -139,10 +139,10 @@ public class MainLayout extends AppLayout {
         return new MenuItemInfo[]{ //
                 new MenuItemInfo("Dashboard", "la la-book-open", DashboardView.class), //
 
-                new MenuItemInfo("Potted Plants", "la la-table", PottedPlantsView.class), //
-                new MenuItemInfo("Garden Plants", "la la-table", GardenPlantsView.class), //
+                new MenuItemInfo("Rośliny doniczkowe", "la la-table", PottedPlantsView.class), //
+                new MenuItemInfo("Rośliny ogrodowe", "la la-table", GardenPlantsView.class), //
 
-                new MenuItemInfo("Users", "la la-users-cog", UsersView.class), //
+                new MenuItemInfo("Użytkownicy", "la la-users-cog", UsersView.class), //
 
         };
     }
@@ -160,7 +160,7 @@ public class MainLayout extends AppLayout {
 
             ContextMenu userMenu = new ContextMenu(name);
             userMenu.setOpenOnClick(true);
-            userMenu.addItem("Logout", e -> {
+            userMenu.addItem("Wyloguj", e -> {
                 authenticatedUser.logout();
             });
             layout.add(name);

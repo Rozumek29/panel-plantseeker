@@ -1,5 +1,6 @@
 package com.github.rozumek29.plantseekerpanel.data.entity;
 
+import com.vaadin.flow.component.textfield.TextField;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,9 +23,9 @@ public class GardenPlant extends Plant{
     private String shoots;
     private String leaves;
     private String flowers_desc;
-    private LocalDate flowers_date;
+    private String flowers_date;
     private String fruits_desc;
-    private LocalDate fruits_date;
+    private String fruits_date;
     private String origin;
 
 }

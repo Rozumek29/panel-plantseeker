@@ -30,6 +30,8 @@ public class GardenPlantsView extends VerticalLayout {
             UI.getCurrent().navigate(NewGardenPlant.class);
         }));
 
+        crud.getGrid().setColumns("id", "polishName", "latinName", "polishFamily", "latinFamily", "decorativeness", "plantUsage", "sort", "height", "bark", "shoots", "leaves", "flowers_desc", "flowers_date", "fruits_desc", "fruits_date", "origin", "images", "description");
+
         add(
                 crud
         );

@@ -1,6 +1,7 @@
 package com.github.rozumek29.plantseekerpanel.views.plants;
 
 import com.github.rozumek29.plantseekerpanel.data.entity.GardenPlant;
+import com.github.rozumek29.plantseekerpanel.data.entity.User;
 import com.github.rozumek29.plantseekerpanel.data.service.GardenPlantService;
 import com.github.rozumek29.plantseekerpanel.data.service.PottedPlantService;
 import com.github.rozumek29.plantseekerpanel.ftp.FTPUploader;
@@ -20,8 +21,13 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.upload.Upload;
 import com.vaadin.flow.component.upload.receivers.MultiFileMemoryBuffer;
 import com.vaadin.flow.router.Route;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.annotation.security.RolesAllowed;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,29 +35,29 @@ import java.util.List;
 @RolesAllowed("user")
 public class NewGardenPlant extends HorizontalLayout {
 
-    private final TextField polishName = new TextField("Polish name");
-    private final TextField latinName = new TextField("Latin name");
-    private final TextField polishFamily = new TextField("Polish family");
-    private final TextField latinFamily = new TextField("Latin family");
-    private final TextField decorativeness = new TextField("Decorativeness");
-    private final TextField plantUsage = new TextField("Plant Usage");
-    private final TextArea description = new TextArea("description");
+    private final TextField polishName = new TextField("Nazwa Polska");
+    private final TextField latinName = new TextField("Nazwa Łacińska");
+    private final TextField polishFamily = new TextField("Polska nazwa rodziny");
+    private final TextField latinFamily = new TextField("Łacińska nazwa rodziny");
+    private final TextField decorativeness = new TextField("Dekoracyjność");
+    private final TextField plantUsage = new TextField("Wykorzystanie");
+    private final TextArea description = new TextArea("Opis");
 
-    private final TextField sort = new TextField("Sort");
-    private final TextField height = new TextField("Height");
-    private final TextField bark = new TextField("Bark");
-    private final TextField shoots = new TextField("Shoots");
-    private final TextField leaves = new TextField("leaves");
-    private final TextField flowers_desc = new TextField("Flowers Description");
-    private final DatePicker flowers_date = new DatePicker("Flowers Date");
-    private final TextField fruits_desc = new TextField("Fruits Description");
-    private final DatePicker fruits_date = new DatePicker("Fruits Date");
-    private final TextField origin = new TextField("Origin");
+    private final TextField sort = new TextField("Pokrój");
+    private final TextField height = new TextField("Wysokość");
+    private final TextField bark = new TextField("Kora");
+    private final TextField shoots = new TextField("Pędy");
+    private final TextField leaves = new TextField("Liście");
+    private final TextField flowers_desc = new TextField("Opis kwiatów");
+    private final TextField flowers_date = new TextField("Okres kwitnienia");
+    private final TextField fruits_desc = new TextField("Opis owoców");
+    private final TextField fruits_date = new TextField("Okres owocowania");
+    private final TextField origin = new TextField("Pochodzenie");
 
     private final MultiFileMemoryBuffer buffer = new MultiFileMemoryBuffer();
 
-    private final H4 uploadTitle = new H4("Upload images");
-    private final Paragraph uploadHint = new Paragraph("Accepted file formats: JPEG, PNG");
+    private final H4 uploadTitle = new H4("Zdjęcia");
+    private final Paragraph uploadHint = new Paragraph("Akceptowane formaty: JPEG, PNG");
     private final Upload imgUpload = new Upload(buffer);
 
     public NewGardenPlant(GardenPlantService service) {
@@ -73,7 +79,7 @@ public class NewGardenPlant extends HorizontalLayout {
                 new HorizontalLayout(
                         new VerticalLayout(
                                 backbtn,
-                                new H2("Create Garden Plant"),
+                                new H2("Dodaj roślinę ogrodową"),
                                 new FormLayout(
                                         polishName,
                                         latinName,
@@ -100,7 +106,7 @@ public class NewGardenPlant extends HorizontalLayout {
                                                 imgUpload
                                         )
                                 ),
-                                new Button("Save", event -> {
+                                new Button("Zapisz", event -> {
                                     var plant = new GardenPlant();
 
                                     plant.setPolishName(polishName.getValue());
@@ -124,6 +130,12 @@ public class NewGardenPlant extends HorizontalLayout {
 
                                     plant.setDescription(description.getValue());
 
+                                    plant.setPublished(LocalDate.now(ZoneId.of("Europe/Warsaw")));
+
+                                    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+                                    plant.setUsername(((User)principal).getName());
+
                                     if (imgUpload.isUploading()){
                                         return;
                                     }
@@ -135,7 +147,7 @@ public class NewGardenPlant extends HorizontalLayout {
 
 
                                     UI.getCurrent().navigate(GardenPlantsView.class);
-                                    Notification.show("Plant saved.");
+                                    Notification.show("Zapisano...");
                                 })
                         )
                 )

@@ -21,32 +21,38 @@ import com.vaadin.flow.component.upload.Upload;
 import com.vaadin.flow.component.upload.receivers.MultiFileMemoryBuffer;
 import com.vaadin.flow.router.Route;
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.annotation.security.RolesAllowed;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 
 @Route(value = "new-potted-plant", layout = MainLayout.class)
 @RolesAllowed("user")
 public class NewPottedPlant extends HorizontalLayout {
 
-    private final TextField polishName = new TextField("Polish name");
-    private final TextField latinName = new TextField("Latin name");
-    private final TextField polishFamily = new TextField("Polish family");
-    private final TextField latinFamily = new TextField("Latin family");
-    private final TextField decorativeness = new TextField("Decorativeness");
-    private final TextField plantUsage = new TextField("Plant Usage");
-    private final TextArea description = new TextArea("description");
+    private final TextField polishName = new TextField("Nazwa Polska");
+    private final TextField latinName = new TextField("Nazwa Łacińska");
+    private final TextField polishFamily = new TextField("Polska nazwa rodziny");
+    private final TextField latinFamily = new TextField("Łacińska nazwa rodziny");
+    private final TextField decorativeness = new TextField("Dekoracyjność");
+    private final TextField plantUsage = new TextField("Wykorzystanie");
+    private final TextArea description = new TextArea("Opis");
 
-    private final TextField toxicity = new TextField("Toxicity");
-    private final TextField lightConditions = new TextField("Light Conditions");
-    private final TextField subsoil = new TextField("Subsoil");
-    private final TextField watering = new TextField("Watering");
+    private final TextField toxicity = new TextField("Toksyczność");
+    private final TextField lightConditions = new TextField("Warunki świetlne");
+    private final TextField subsoil = new TextField("Podłoże");
+    private final TextField watering = new TextField("Podlewanie");
 
     private final MultiFileMemoryBuffer buffer = new MultiFileMemoryBuffer();
 
-    private final H4 uploadTitle = new H4("Upload images");
-    private final Paragraph uploadHint = new Paragraph("Accepted file formats: JPEG, PNG");
+    private final H4 uploadTitle = new H4("Zdjęcia");
+    private final Paragraph uploadHint = new Paragraph("Akceptowane formaty: JPEG, PNG");
     private final Upload imgUpload = new Upload(buffer);
 
     public NewPottedPlant(PottedPlantService service) {
@@ -69,7 +75,7 @@ public class NewPottedPlant extends HorizontalLayout {
                 new HorizontalLayout(
                         new VerticalLayout(
                                 backbtn,
-                                new H2("Create Potted Plant"),
+                                new H2("Dodaj roślinę doniczkową"),
                                 new FormLayout(
                                         polishName,
                                         latinName,
@@ -88,7 +94,7 @@ public class NewPottedPlant extends HorizontalLayout {
                                                 imgUpload
                                         )
                                 ),
-                                new Button("Save", event -> {
+                                new Button("Zapisz", event -> {
                                     var plant = new PottedPlant();
 
                                     plant.setPolishName(polishName.getValue());
@@ -103,6 +109,12 @@ public class NewPottedPlant extends HorizontalLayout {
                                     plant.setToxicity(toxicity.getValue());
                                     plant.setDescription(description.getValue());
 
+                                    plant.setPublished(LocalDate.now(ZoneId.of("Europe/Warsaw")));
+
+                                    UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+                                    plant.setUsername(userDetails.getUsername());
+
                                     if (imgUpload.isUploading()){
                                         return;
                                     }
@@ -112,7 +124,7 @@ public class NewPottedPlant extends HorizontalLayout {
                                     service.update(plant);
 
                                     UI.getCurrent().navigate(PottedPlantsView.class);
-                                    Notification.show("Plant saved.");
+                                    Notification.show("Zapisano...");
                                 })
                         )
                 )

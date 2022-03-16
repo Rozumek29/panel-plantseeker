@@ -25,6 +25,7 @@ public class PottedPlantsView extends VerticalLayout {
         var crud = new GridCrud<>(PottedPlant.class, service);
         crud.setAddOperationVisible(false);
         crud.getCrudLayout().addToolbarComponent(new Button("", new Icon(VaadinIcon.PLUS), event -> UI.getCurrent().navigate(NewPottedPlant.class)));
+        crud.getGrid().setColumns("id", "polishName", "latinName", "polishFamily", "latinFamily", "decorativeness", "plantUsage", "toxicity", "lightConditions", "subsoil", "watering", "images", "description");
 
         add(
                 crud
