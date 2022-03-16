@@ -5,6 +5,7 @@ import com.github.rozumek29.plantseekerpanel.data.entity.User;
 import com.github.rozumek29.plantseekerpanel.data.service.GardenPlantService;
 import com.github.rozumek29.plantseekerpanel.data.service.PottedPlantService;
 import com.github.rozumek29.plantseekerpanel.ftp.FTPUploader;
+import com.github.rozumek29.plantseekerpanel.security.AuthenticatedUser;
 import com.github.rozumek29.plantseekerpanel.views.MainLayout;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -30,6 +31,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Route(value = "new-garden-plant", layout = MainLayout.class)
 @RolesAllowed("user")
@@ -60,7 +62,7 @@ public class NewGardenPlant extends HorizontalLayout {
     private final Paragraph uploadHint = new Paragraph("Akceptowane formaty: JPEG, PNG");
     private final Upload imgUpload = new Upload(buffer);
 
-    public NewGardenPlant(GardenPlantService service) {
+    public NewGardenPlant(GardenPlantService service, AuthenticatedUser authenticatedUser) {
 
         /*
         Yeah, I know. I should use binder here.
@@ -132,9 +134,9 @@ public class NewGardenPlant extends HorizontalLayout {
 
                                     plant.setPublished(LocalDate.now(ZoneId.of("Europe/Warsaw")));
 
-                                    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                                    User user = authenticatedUser.get().get();
 
-                                    plant.setUsername(((User)principal).getName());
+                                    plant.setUsername(user.getName());
 
                                     if (imgUpload.isUploading()){
                                         return;

@@ -1,9 +1,15 @@
 package com.github.rozumek29.plantseekerpanel.views.dashboard;
 
+import com.github.rozumek29.plantseekerpanel.data.service.GardenPlantService;
+import com.github.rozumek29.plantseekerpanel.data.service.PottedPlantService;
 import com.github.rozumek29.plantseekerpanel.views.MainLayout;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -16,20 +22,23 @@ import javax.annotation.security.PermitAll;
 @PermitAll
 public class DashboardView extends VerticalLayout {
 
-    public DashboardView() {
+    public DashboardView(GardenPlantService gardenService, PottedPlantService pottedService) {
         setSpacing(false);
 
-        Image img = new Image("images/empty-plant.png", "placeholder plant");
-        img.setWidth("200px");
-        add(img);
+        Span potted = new Span("Doniczkowych: "+pottedService.count());
+        potted.getElement().getThemeList().add("badge");
+        potted.getStyle().set("padding", "10px");
+        potted.getStyle().set("font-size", "20px");
 
-        add(new H2("This is beautiful plant picture."));
-        add(new Paragraph("Dashboard coming soon 🤗"));
+        Span garden = new Span("Ogrodowych: "+gardenService.count());
+        garden.getElement().getThemeList().add("badge");
+        garden.getStyle().set("padding", "10px");
+        garden.getStyle().set("font-size", "20px");
 
-        setSizeFull();
-        setJustifyContentMode(JustifyContentMode.CENTER);
-        setDefaultHorizontalComponentAlignment(Alignment.CENTER);
-        getStyle().set("text-align", "center");
+        add(
+                new HorizontalLayout(potted, garden)
+        );
+
     }
 
 }

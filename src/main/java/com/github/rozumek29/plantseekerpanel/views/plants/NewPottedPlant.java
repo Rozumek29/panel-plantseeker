@@ -1,8 +1,10 @@
 package com.github.rozumek29.plantseekerpanel.views.plants;
 
 import com.github.rozumek29.plantseekerpanel.data.entity.PottedPlant;
+import com.github.rozumek29.plantseekerpanel.data.entity.User;
 import com.github.rozumek29.plantseekerpanel.data.service.PottedPlantService;
 import com.github.rozumek29.plantseekerpanel.ftp.FTPUploader;
+import com.github.rozumek29.plantseekerpanel.security.AuthenticatedUser;
 import com.github.rozumek29.plantseekerpanel.views.MainLayout;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -55,7 +57,7 @@ public class NewPottedPlant extends HorizontalLayout {
     private final Paragraph uploadHint = new Paragraph("Akceptowane formaty: JPEG, PNG");
     private final Upload imgUpload = new Upload(buffer);
 
-    public NewPottedPlant(PottedPlantService service) {
+    public NewPottedPlant(PottedPlantService service, AuthenticatedUser authenticatedUser) {
 
         /*
         Yeah, I know. I should use binder here.
@@ -111,9 +113,9 @@ public class NewPottedPlant extends HorizontalLayout {
 
                                     plant.setPublished(LocalDate.now(ZoneId.of("Europe/Warsaw")));
 
-                                    UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                                    User user = authenticatedUser.get().get();
 
-                                    plant.setUsername(userDetails.getUsername());
+                                    plant.setUsername(user.getName());
 
                                     if (imgUpload.isUploading()){
                                         return;
