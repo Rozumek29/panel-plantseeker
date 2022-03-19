@@ -1,5 +1,6 @@
 package com.github.rozumek29.plantseekerpanel.ftp;
 
+import com.vaadin.flow.spring.annotation.SpringComponent;
 import org.apache.commons.net.PrintCommandListener;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
@@ -12,7 +13,6 @@ import javax.annotation.PreDestroy;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@Scope("singleton")
 public class FTPConnector {
 
     protected static String host = "serwer1727017.home.pl";
@@ -23,8 +23,6 @@ public class FTPConnector {
 
 
     private static final Logger logger = LoggerFactory.getLogger(FTPClient.class);
-
-    private static FTPConnector instance = null;
 
     private FTPConnector() {
         client = new FTPClient();
@@ -43,36 +41,30 @@ public class FTPConnector {
             client.setFileTransferMode(FTP.BINARY_FILE_TYPE);
             client.setFileType(FTP.BINARY_FILE_TYPE);
 
-            client.addProtocolCommandListener(new PrintCommandListener(new PrintWriter(System.out)));
+            //client.addProtocolCommandListener(new PrintCommandListener(new PrintWriter(System.out)));
 
             client.changeWorkingDirectory(this.path);
 
-            logger.info("CONNECTED TO FTP SERVER");
+            logger.info("[FTP] CONNECTED TO FTP SERVER");
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     @PreDestroy
-    public void disconnect() throws IOException {
-        client.disconnect();
-        logger.info("DISCONNECTED FROM FTP SERVER");
-    }
-
-    public static FTPConnector getInstance() {
-        if (instance != null) {
-            return instance;
-        } else {
-            instance = new FTPConnector();
-            return instance;
+    public static void disconnect(){
+        try {
+            client.disconnect();
+            logger.info("[FTP] DISCONNECTED FROM THE FTP SERVER");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    public FTPClient getClient() {
-        if (instance != null) {
+
+    public static FTPClient getClient() {
+            new FTPConnector();
             return client;
-        } else {
-            throw new NullPointerException("Could not return FTPClient instance, because instance is null");
-        }
     }
 }

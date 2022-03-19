@@ -71,6 +71,7 @@ public class NewPottedPlant extends HorizontalLayout {
         });
 
         imgUpload.setAcceptedFileTypes("image/jpeg", "image/png");
+        imgUpload.setMaxFileSize(5000000);
         imgUpload.setMaxFiles(5);
 
         add(
