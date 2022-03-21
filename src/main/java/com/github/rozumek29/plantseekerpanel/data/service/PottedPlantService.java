@@ -2,16 +2,17 @@ package com.github.rozumek29.plantseekerpanel.data.service;
 
 import com.github.rozumek29.plantseekerpanel.data.entity.PottedPlant;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.vaadin.crudui.crud.CrudListener;
 
 import java.util.Collection;
 
 @Service
-@RequiredArgsConstructor
 public class PottedPlantService implements CrudListener<PottedPlant> {
 
-    private final PottedPlantRepository repository;
+    @Autowired
+    private PottedPlantRepository repository;
 
     @Override
     public Collection<PottedPlant> findAll() {
