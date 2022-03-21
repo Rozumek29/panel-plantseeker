@@ -18,6 +18,10 @@ public class PottedPlantService implements CrudListener<PottedPlant> {
         return repository.findAll();
     }
 
+    public PottedPlant findById(Long id){
+        return repository.getById(id);
+    }
+
     @Override
     public PottedPlant add(PottedPlant plant) {
         return repository.save(plant);

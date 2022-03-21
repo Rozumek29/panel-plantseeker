@@ -25,10 +25,12 @@ public class GardenPlantsView extends VerticalLayout {
         setSpacing(false);
 
         var crud = new GridCrud<>(GardenPlant.class, service);
+
+        crud.setUpdateOperationVisible(false);
+        crud.getCrudLayout().addToolbarComponent(new Button("",  new Icon(VaadinIcon.PENCIL), event -> UI.getCurrent().navigate(EditGardenPlant.class)));
+
         crud.setAddOperationVisible(false);
-        crud.getCrudLayout().addToolbarComponent(new Button("", new Icon(VaadinIcon.PLUS), event -> {
-            UI.getCurrent().navigate(NewGardenPlant.class);
-        }));
+        crud.getCrudLayout().addToolbarComponent(new Button("", new Icon(VaadinIcon.PLUS), event -> UI.getCurrent().navigate(NewGardenPlant.class)));
 
         crud.getGrid().setColumns("id", "polishName", "latinName", "polishFamily", "latinFamily", "decorativeness", "plantUsage", "sort", "height", "bark", "shoots", "leaves", "flowers_desc", "flowers_date", "fruits_desc", "fruits_date", "origin", "images", "description");
 
