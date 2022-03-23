@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.vaadin.crudui.crud.CrudListener;
 
 import java.util.Collection;
+import java.util.Optional;
 
 @Service
 public class PottedPlantService implements CrudListener<PottedPlant> {
@@ -19,8 +20,8 @@ public class PottedPlantService implements CrudListener<PottedPlant> {
         return repository.findAll();
     }
 
-    public PottedPlant findById(Long id){
-        return repository.getById(id);
+    public Optional<PottedPlant> findById(Long id){
+        return repository.findById(id);
     }
 
     @Override

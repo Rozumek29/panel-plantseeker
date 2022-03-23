@@ -21,6 +21,8 @@ public class PlantImage {
         this.img_name = img_name;
     }
 
+    private Long plant_id;
+
     @Override
     public String toString() {
         return this.img_name;

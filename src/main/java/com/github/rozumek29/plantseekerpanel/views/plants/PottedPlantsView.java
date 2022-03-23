@@ -2,6 +2,7 @@ package com.github.rozumek29.plantseekerpanel.views.plants;
 
 import com.github.rozumek29.plantseekerpanel.data.entity.GardenPlant;
 import com.github.rozumek29.plantseekerpanel.data.entity.PottedPlant;
+import com.github.rozumek29.plantseekerpanel.data.service.PlantImageService;
 import com.github.rozumek29.plantseekerpanel.data.service.PottedPlantService;
 import com.github.rozumek29.plantseekerpanel.views.MainLayout;
 import com.vaadin.flow.component.UI;
@@ -11,6 +12,7 @@ import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.page.Page;
 import com.vaadin.flow.component.textfield.TextField;
@@ -32,9 +34,10 @@ public class PottedPlantsView extends VerticalLayout {
 
     private Long plantId;
 
-    EditPottedPlant editPottedPlant = new EditPottedPlant();
+    EditPottedPlant editPottedPlant;
 
-    public PottedPlantsView(PottedPlantService service) {
+    public PottedPlantsView(PottedPlantService service, PlantImageService imageService) {
+        editPottedPlant = new EditPottedPlant(imageService);
         setSpacing(false);
 
         var crud = new GridCrud<>(PottedPlant.class, service);
@@ -43,7 +46,7 @@ public class PottedPlantsView extends VerticalLayout {
         crud.getCrudLayout().addToolbarComponent(new Button("", new Icon(VaadinIcon.PENCIL), event -> {
             if (crud.getGrid().asSingleSelect().getValue() != null){
                 Dialog dialog = new Dialog();
-                VerticalLayout layout = editPottedPlant.createDialogLayout(dialog, crud.getGrid().asSingleSelect().getValue().getId());
+                VerticalLayout layout = editPottedPlant.createDialogLayout(service, dialog, crud.getGrid().asSingleSelect().getValue().getId());
                 dialog.add(layout);
                 dialog.open();
             }else {
