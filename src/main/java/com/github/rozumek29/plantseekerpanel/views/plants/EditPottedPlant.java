@@ -36,8 +36,6 @@ import java.util.List;
 
 public class EditPottedPlant {
 
-    private Long plantID;
-
     private final TextField polishName = new TextField("Nazwa Polska");
     private final TextField latinName = new TextField("Nazwa Łacińska");
     private final TextField polishFamily = new TextField("Polska nazwa rodziny");
@@ -57,38 +55,34 @@ public class EditPottedPlant {
     private final Paragraph uploadHint = new Paragraph("Akceptowane formaty: JPEG, PNG");
     private Upload imgUpload;
 
-    Grid<PlantImage> grid = new Grid<>(PlantImage.class);
+    Grid<PlantImage> grid;
 
     VerticalLayout imgLayout1;
-    VerticalLayout imgLayout2 = new VerticalLayout(grid);
+    VerticalLayout imgLayout2;
     HorizontalLayout imgLayout;
 
     private PlantImageService imgService;
 
     public EditPottedPlant(PlantImageService imageService) {
         this.imgService = imageService;
-        grid.addColumn(
-                new ComponentRenderer<>(Button::new, ((button, plantImage) -> {
-                    button.addThemeVariants(ButtonVariant.LUMO_ICON, ButtonVariant.LUMO_ERROR, ButtonVariant.LUMO_TERTIARY);
-                    button.addClickListener(event -> {
-                        imgService.delete(plantImage);
-                        FTPUploader.remove(plantImage.getImg_name());
-                        refreshGrid(plantImage.getPlant_id());
-                    });
-                    button.setIcon(new Icon(VaadinIcon.TRASH));
-                }))
-        );
     }
+
+    private List<PlantImage> images;
 
     public VerticalLayout createDialogLayout(PottedPlantService service, Dialog dialog, Long plantID) {
 
-        buffer = new MultiFileMemoryBuffer();
-        imgUpload = new Upload(buffer);
-        imgLayout1 = new VerticalLayout(uploadTitle, uploadHint, imgUpload);
-        imgLayout = new HorizontalLayout(imgLayout1, imgLayout2);
+        this.grid = new Grid<>(PlantImage.class);
+        this.buffer = new MultiFileMemoryBuffer();
+        this.imgUpload = new Upload(buffer);
+        this.imgLayout1 = new VerticalLayout(uploadTitle, uploadHint, imgUpload);
+        this.imgLayout2 = new VerticalLayout(grid);
+        this.imgLayout = new HorizontalLayout(imgLayout1, imgLayout2);
+
         dialog.getElement().setAttribute("aria-label", "Edytuj rośinę");
 
         PottedPlant plant = service.findById(plantID).get();
+
+        this.images = plant.getImages();
 
         H2 headLine = new H2("Edytuj roślinę");
 
@@ -107,7 +101,28 @@ public class EditPottedPlant {
         toxicity.setValue(plant.getToxicity());
         description.setValue(plant.getDescription());
 
+        grid.addColumn(
+                new ComponentRenderer<>(Button::new, ((button, plantImage) -> {
+                    button.addThemeVariants(ButtonVariant.LUMO_ICON, ButtonVariant.LUMO_ERROR, ButtonVariant.LUMO_TERTIARY);
+                    button.addClickListener(event -> {
+                        imgService.delete(plantImage);
+                        FTPUploader.remove(plantImage.getImg_name());
+                        refreshGrid(plantImage.getPlant_id());
+                        System.out.println(plant.getImages());
+
+                        for (PlantImage img : plant.getImages()) {
+                            if (img.getPlant_id() == plantImage.getPlant_id()){
+                                plant.getImages().remove(img);
+                            }
+                        }
+                        System.out.println(plant.getImages());
+                    });
+                    button.setIcon(new Icon(VaadinIcon.TRASH));
+                }))
+        );
+
         refreshGrid(plantID);
+
 
         imgLayout.setWidth("100%");
         imgLayout1.setWidth("40%");
