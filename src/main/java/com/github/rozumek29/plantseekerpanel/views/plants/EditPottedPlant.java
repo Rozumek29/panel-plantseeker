@@ -109,7 +109,6 @@ public class EditPottedPlant {
                         FTPUploader.remove(plantImage.getImg_name());
                         refreshGrid(plantImage.getPlant_id());
                         System.out.println(plant.getImages());
-
                         for (PlantImage img : plant.getImages()) {
                             if (img.getPlant_id() == plantImage.getPlant_id()){
                                 plant.getImages().remove(img);
